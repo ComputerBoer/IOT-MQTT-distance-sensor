@@ -30,13 +30,20 @@ float getDistanceCm()
 
     return distance > 400 ? 400 : round(distance);
 }
-void blink(int duration = 500)
+
+void blink(int duration = 500, int offduration = -1)
 {
+    if (offduration < 0)
+    {
+        offduration = duration;
+    }
+
     digitalWrite(ledPin, LOW);
     delay(duration);
     digitalWrite(ledPin, HIGH);
-    delay(duration);
+    delay(offduration);
 }
+
 bool wifiConnect(String networkname, String password)
 {
     byte i = 0;
