@@ -1,3 +1,4 @@
+#pragma once
 #include <Arduino.h>
 #include <LittleFS.h>
 
@@ -10,10 +11,9 @@ extern String MQTT_USERNAME;
 extern String MQTT_PASSWORD;
 extern String MQTT_PUBLISH_TOPIC;
 extern String MQTT_SUBSCRIBE_TOPIC;
+extern int SLEEP_TIME_MINUTES;
 
-void blink(int duration = 500, int offduration = -1);
-
-float average (float * array, int len)  // assuming array is int.
+inline float average (float * array, int len)  // assuming array is int.
 {
   long sum = 0L ;  // sum will be larger than an item, long for safety.
   for (int i = 0 ; i < len ; i++)
@@ -22,7 +22,7 @@ float average (float * array, int len)  // assuming array is int.
 }
 
 //most occuring
-float mode(float array[100]) {
+inline float mode(float array[100]) {
 
     float modeMap[100];
     
@@ -46,7 +46,7 @@ float mode(float array[100]) {
     return maxEl;
 }
 
-String loadConfig()
+inline String loadConfig()
 {
   int i = 0;
   if (!LittleFS.begin())
@@ -124,6 +124,8 @@ String loadConfig()
       MQTT_PUBLISH_TOPIC = value;
     else if (key == "MQTT_SUBSCRIBE_TOPIC")
       MQTT_SUBSCRIBE_TOPIC = value;
+    else if (key == "SLEEP_TIME_MINUTES")
+      SLEEP_TIME_MINUTES = value.toInt();
   }
 
   file.close();

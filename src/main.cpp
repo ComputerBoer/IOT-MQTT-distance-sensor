@@ -16,6 +16,7 @@ String MQTT_USERNAME = "";
 String MQTT_PASSWORD = "";
 String MQTT_PUBLISH_TOPIC = "";
 String MQTT_SUBSCRIBE_TOPIC = "";
+int SLEEP_TIME_MINUTES = 0;
 
 void setup()
 {
@@ -67,6 +68,16 @@ void loop()
 
   sendToMQTT(MQTT_PUBLISH_TOPIC.c_str(), measurement);
 
-  // waits for the next measurement
-  delay(5000);
+  if (SLEEP_TIME_MINUTES > 0)
+  {
+    Serial.printf("Entering deep sleep for %d minute(s)...\n", SLEEP_TIME_MINUTES);
+    // Convert minutes to microseconds (1 min = 60,000,000 us)
+    ESP.deepSleep((uint64_t)SLEEP_TIME_MINUTES * 60 * 1000000ULL);
+  }
+  else
+  {
+    // waits for the next measurement if sleep mode is 0
+    Serial.printf("No sleep time given, so i continue in 5 sec!");
+    delay(5000);
+  }
 }
